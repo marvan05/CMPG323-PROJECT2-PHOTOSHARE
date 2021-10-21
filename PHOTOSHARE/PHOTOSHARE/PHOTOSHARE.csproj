@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Controllers\HtmlPage1.html" />
+    <Content Include="Controllers\HtmlPage2.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>

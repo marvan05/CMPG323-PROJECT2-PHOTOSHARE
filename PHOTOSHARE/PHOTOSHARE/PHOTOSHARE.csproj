@@ -93,6 +93,7 @@
     <Content Include="Controllers\HtmlPage3.html" />
     <Content Include="Controllers\HtmlPage4.html" />
     <Content Include="Controllers\HtmlPage5.html" />
+    <Content Include="Controllers\HtmlPage6.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>

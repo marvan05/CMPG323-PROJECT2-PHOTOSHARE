@@ -77,7 +77,7 @@ namespace PHOTOSHARE.Areas.Identity.Pages.Account
         {
             if (User.Identity.IsAuthenticated)
             {
-                Response.Redirect("/");
+                Response.Redirect("/Home");
             }
             
             ReturnUrl = returnUrl;

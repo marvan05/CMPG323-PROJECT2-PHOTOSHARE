@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PHOTOSHARE</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><strong>PHOTOSHARE</strong></a>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial.cshtml" />
                     
@@ -29,8 +29,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - PHOTOSHARE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container"><center>
+             &copy; @DateTime.Now - PHOTOSHARE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></center>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

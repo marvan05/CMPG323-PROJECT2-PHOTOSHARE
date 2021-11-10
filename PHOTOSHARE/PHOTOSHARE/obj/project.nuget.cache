@@ -1,6 +1,10 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "jul6ayLnbbiHSNNsQRDlNsvzwfu6mlHPstm+EYZIAuZj2cpu5bJDu9oNmWj7RYhJQxo5ZE0MD+s1/dLjFnB4vg==",
+=======
+  "dgSpecHash": "c+2CNV9dcrbeU5uSzJ7YQT7KwZ6AEBm8y6ezdRg1yCeUQKkbPvin7m4OpubzZDfJXaXVJnJKkywDRoJqdwTkbA==",
+>>>>>>> cb28234b8da166632d8d8030ee9e99b8b5af110b
   "success": true,
   "projectFilePath": "C:\\PHOTOSHARE\\CMPG323-PROJECT2\\PHOTOSHARE\\PHOTOSHARE\\PHOTOSHARE.csproj",
   "expectedPackageFiles": [

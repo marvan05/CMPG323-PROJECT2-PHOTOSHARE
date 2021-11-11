@@ -22,12 +22,7 @@ namespace PHOTOSHARE.Controllers
 
         public IActionResult Index()
         {
-            var model = new AlbumIndexModel()
-            {
-
-            };
-
-            return View(model);
+            return View();
         }
 
         public IActionResult Privacy()

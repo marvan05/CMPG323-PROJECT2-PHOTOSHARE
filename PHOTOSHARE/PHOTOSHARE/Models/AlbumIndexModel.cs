@@ -7,6 +7,6 @@ namespace PHOTOSHARE.Models
 {
     public class AlbumIndexModel
     {
-        public IEnumerable<album> Albums { get; set; }
+        public IEnumerable<Album> Albums { get; set; }
     }
 }

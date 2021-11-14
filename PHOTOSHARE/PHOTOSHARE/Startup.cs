@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PHOTOSHARE.Models;
 
 namespace PHOTOSHARE
 {
@@ -26,7 +27,7 @@ namespace PHOTOSHARE
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PHOTOSHAREDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PHOTOSHAREDBContextConnection")));
-            services.AddMvc();
+            services.AddSingleton(Configuration);
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

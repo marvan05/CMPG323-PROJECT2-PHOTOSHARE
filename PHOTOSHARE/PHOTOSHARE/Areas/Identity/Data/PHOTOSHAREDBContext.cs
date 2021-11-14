@@ -25,7 +25,7 @@ namespace PHOTOSHARE.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<album> AlbumImages { get; set; }
+        public DbSet<Album> Album { get; set; }
 
     }
 }

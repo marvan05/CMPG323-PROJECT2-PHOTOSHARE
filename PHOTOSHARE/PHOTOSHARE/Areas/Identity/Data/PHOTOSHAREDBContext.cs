@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PHOTOSHARE.Areas.Identity.Data;
+using PHOTOSHARE.Models;
 
 namespace PHOTOSHARE.Data
 {
@@ -23,5 +24,8 @@ namespace PHOTOSHARE.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<album> AlbumImages { get; set; }
+
     }
 }

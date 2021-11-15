@@ -1,16 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PHOTOSHARE.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PHOTOSHARE.Models;
+using Microsoft.EntityFrameworkCore;
+using PHOTOSHARE.Data;
 
 namespace PHOTOSHARE
 {
@@ -26,10 +25,12 @@ namespace PHOTOSHARE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PHOTOSHAREDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PHOTOSHAREDBContextConnection")));
-            services.AddSingleton(Configuration);
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<PHOTOSHAREDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PHOTOSHAREDBContextConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

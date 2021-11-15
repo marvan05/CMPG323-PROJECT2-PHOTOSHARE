@@ -1,0 +1,24 @@
+﻿@model AlbumViewModel
+
+<link rel="stylesheet" href="./css/Album.css">
+
+@{
+    string BuildImageSoucre(string imageBinary)
+    {
+        return string.Concat("data:image / jpeg; base64,", imageBinary);
+    }
+}
+
+<h1>Albums</h1>
+
+@if (Model.Albums.Any())
+{
+    foreach (var album in Model.Albums)
+    {
+        <div class="col-md-4 m-4 photo-container">
+            <img src="data:image;base64,@album.Image" class="img-fluid rounded p-2" alt="@album.Owner">
+            <a class="p-3">@album.Title</a>
+        </div>
+    }
+
+}

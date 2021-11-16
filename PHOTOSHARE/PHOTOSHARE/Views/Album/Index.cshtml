@@ -1,0 +1,91 @@
+﻿@model AlbumViewModel
+
+<link rel="stylesheet" href="./css/Album.css">
+
+@{
+    string BuildImageSoucre(string imageBinary)
+    {
+        return string.Concat("data:image / jpeg; base64,", imageBinary);
+    }
+}
+
+<h1>Albums</h1>
+
+<button id="btnAddAlbum" class="btn btn-primary">Add Album</button>
+<br />
+
+<input type="hidden" value="@Url.Action("CreateAlbum", "Album")" id="createAlbumUrl" />
+
+@if (Model.Albums.Any())
+{
+    foreach (var album in Model.Albums)
+    {
+        <div class="col-md-4 m-4 photo-container">
+            <img src="@album.Image" class="img-fluid rounded p-2" alt="@album.Owner">
+            <a class="p-3">@album.Title</a>
+        </div>
+    }
+
+}
+
+<div class="modal" role="dialog" id="createAlbumModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create new Album</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submit">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#btnAddAlbum').on('click', function () {
+            var url = $('#createAlbumUrl').val();
+            $.get(url, function (response) {
+                $('.modal-body').html(response);
+                $('#createAlbumModal').modal('show');
+            });
+        });
+
+        $('#submit').on('click', () => {
+            var reader = new FileReader();
+
+            var file = document.querySelector('input[type=file]').files[0];;
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+
+            reader.onload = function (e) {
+                var image = reader.result;
+
+                var url = $('#createAlbumUrl').val();
+                var title = $('#title').val();
+
+                $.post(url, { title, image }, function () {
+                    debugger;
+                    $.toast({
+                        title: 'Album Created!',
+                        type: 'info',
+                        delay: 5000
+                    });
+                });
+            };
+        })
+
+    })
+</script>

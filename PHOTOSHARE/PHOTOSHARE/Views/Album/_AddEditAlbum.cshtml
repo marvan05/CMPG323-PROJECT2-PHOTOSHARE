@@ -1,0 +1,12 @@
+﻿@model AlbumViewModel
+
+<form asp-action="CreateAlbum" asp-controller="Album" method="Post" id="albumForm">
+    <div class="form-group">
+        <label for="title">Album Title</label>
+        <input id="title" asp-for="Album.Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="photo">Select a Photo</label>
+        <input type="file" class="form-control-file" id="photo" asp-for="Album.Image">
+    </div>
+</form>

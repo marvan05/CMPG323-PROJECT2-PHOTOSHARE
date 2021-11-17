@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PHOTOSHARE.Data;
+using PHOTOSHARE.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,16 @@ namespace PHOTOSHARE.Controllers
 {
     public class AlbumController : Controller
     {
-        public IActionResult Index()
+        private readonly PHOTOSHAREDBContext _context;
+
+        public AlbumController(PHOTOSHAREDBContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public ViewResult Index()
+        {
+            return View(new AlbumViewModel(_context));
         }
     }
 }

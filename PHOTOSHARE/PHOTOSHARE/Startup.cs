@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PHOTOSHARE.Data;
 
 namespace PHOTOSHARE
 {
@@ -25,6 +27,10 @@ namespace PHOTOSHARE
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<PHOTOSHAREDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PHOTOSHAREDBContextConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PHOTOSHARE.Areas.Identity.Data;
+using PHOTOSHARE.Models;
 
 namespace PHOTOSHARE.Data
 {
@@ -15,6 +16,8 @@ namespace PHOTOSHARE.Data
             : base(options)
         {
         }
+
+        public DbSet<Album> Albums { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

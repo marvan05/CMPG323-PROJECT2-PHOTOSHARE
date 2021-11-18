@@ -20,13 +20,35 @@ namespace PHOTOSHARE.Controllers
 
         public ViewResult Index()
         {
-            return View(new AlbumViewModel(_context));
+            return View(new AlbumViewModel(_context, User.Identity.Name.ToString()));
         }
 
         public PartialViewResult CreateAlbum()
         {
             var albumViewModel = new AlbumViewModel();
             return PartialView("_AddEditAlbum", albumViewModel);
+        }
+
+        [HttpPost]
+        public HttpStatusCode ShareAlbum(int albumId, string username)
+        {
+            try
+            {
+                var shareAlbum = new SharedAlbum
+                {
+                    AlbumId = albumId,
+                    Owner = User.Identity.Name.ToString(),
+                    SharedDate = DateTime.Now,
+                    SharedWith = username,
+                };
+                _context.SharedAlbum.Add(shareAlbum);
+                _context.SaveChangesAsync();
+                return HttpStatusCode.OK;
+            }
+            catch(Exception)
+            {
+                return HttpStatusCode.BadRequest;
+            }
         }
 
         public PartialViewResult EditAlbum(int albumId)
@@ -84,6 +106,7 @@ namespace PHOTOSHARE.Controllers
             {
                 _context.Albums.Attach(album);
                 _context.Albums.Remove(album);
+                _context.SaveChanges();
                 return HttpStatusCode.OK;
             }
             catch (Exception)

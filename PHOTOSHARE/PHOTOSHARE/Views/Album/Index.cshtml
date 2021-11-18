@@ -17,29 +17,59 @@
 <input type="hidden" value="@Url.Action("EditAlbum", "Album")" id="editAlbumUrl" />
 
 
-@if (Model.Albums.Any())
+@if (Model.MyAlbums.Any())
 {
-    foreach (var album in Model.Albums)
+    foreach (var album in Model.MyAlbums)
     {
         <div class="col-md-4 m-4 py-3 photo-container justify-content-center">
             <a class="p-3">@album.Title</a>
             <img src="@album.Image" class="img-fluid rounded p-2" alt="@album.Owner">
             <div class="row justify-content-between p-2">
                 <a id="edit"
-                   class="btn btn-sm btn-primary"
+                   class="btn btn-light btn-sm"
                    data-id="@album.Id">
                     <i class="bi bi-pencil"></i> Edit
                 </a>
-                <a id="view" class="btn btn-sm btn-primary" data-id="@album.Id"><i class="bi bi-eye-fill"></i> View</a>
-                <a id="delete" 
-                   class="btn btn-sm btn-primary" 
+                <a id="view" class="btn btn-light btn-sm" href="@Url.Action("Index", "Photo", new { albumId = album.Id })"><i class="bi bi-eye-fill"></i> View</a>
+                <a id="delete"
+                   class="btn btn-light btn-sm"
                    data-url="@Url.Action("DeleteAlbum", "Album", new { id = @album.Id })">
-                   <i class="bi bi-trash"></i> Delete
+                    <i class="bi bi-trash"></i> Delete
                 </a>
+                <a id="share" class="btn btn-light btn-sm" data-id="@album.Id"><i class="bi bi-share"></i> Share</a>
             </div>
         </div>
     }
 
+}
+else
+{
+    <div class="alert alert-primary" role="alert">
+        You have no Albums!
+    </div>
+}
+
+<h1>Shared With Me</h1>
+
+@if (Model.SharedAlbums.Any())
+{
+    foreach (var album in Model.SharedAlbums)
+    {
+        <div class="col-md-4 m-4 py-3 photo-container justify-content-center">
+            <a class="p-3">@album.Title</a>
+            <img src="@album.Image" class="img-fluid rounded p-2" alt="@album.Owner">
+            <div class="row justify-content-between p-2">
+                <a id="view" class="btn btn-light btn-sm" href="@Url.Action("Index", "Photo", new { albumId = album.Id })"><i class="bi bi-eye-fill"></i> View</a>
+            </div>
+        </div>
+    }
+
+}
+else
+{
+    <div class="alert alert-primary" role="alert">
+        No Albums shared with you!
+    </div>
 }
 
 <div class="modal" role="dialog" id="createAlbumModal">
@@ -79,6 +109,26 @@
     </div>
 </div>
 
+<div class="modal" role="dialog" id="shareAlbumModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Share Album</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="username">Share With User</label>
+                    <input data-url="@Url.Action("ShareAlbum", "Album")" type="text" id="username" class="form-control" required />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="shareAlbum" type="button" class="btn btn-primary">Share</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="snackbar" class="snackbar"></div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -88,6 +138,20 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        debugger;
+
+        $('#share').on('click', function () {
+            var id = $('#share').data('id');
+            $('#shareAlbumModal').modal('show');
+            $('#shareAlbum').on('click', function () {
+                var username = $('#username').val();
+                var url = $('#username').data('url');
+                $.post(url, { id, username }, function () {
+                    $('#shareAlbumModal').modal('hide');
+                    showToastr('Album Shared!');
+                });
+            });
+        });
 
         $('#edit').on('click', function () {
             debugger;
@@ -147,7 +211,7 @@
                     showToastr('Album cannot be Deleted!');
                 })
             })
-        })
+        });
 
     })
 

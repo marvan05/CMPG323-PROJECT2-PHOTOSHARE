@@ -1,0 +1,29 @@
+﻿@model PhotoViewModel
+
+@Html.HiddenFor(a => a.Photo.Id)
+@if (Model.Photo != null)
+{
+    <input type="hidden" id="url" value="@Url.Action("EditPhoto", "Photo")" />
+    <div class="form-group">
+        <label for="title">Album Title</label>
+        <input id="title" asp-for="Photo.Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="photo">Select a Photo</label>
+        <input type="file" class="form-control-file" id="photo" asp-for="Photo.Image">
+    </div>
+}
+else
+{
+    <input type="hidden" id="url" value="@Url.Action("CreatePhoto", "Photo")" />
+
+    <div class="form-group">
+        <label for="title">Album Title</label>
+        <input id="title" asp-for="Photo.Title" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="photo">Select a Photo</label>
+        <input type="file" class="form-control-file" id="photo" asp-for="Photo.Image" required>
+    </div>
+}
+

@@ -18,6 +18,8 @@ namespace PHOTOSHARE.Data
         }
 
         public DbSet<Album> Albums { get; set; }
+        public DbSet<SharedAlbum> SharedAlbum { get; set; }
+        public DbSet<Photo> Photo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,6 +29,8 @@ namespace PHOTOSHARE.Data
             // Add your customizations after calling base.OnModelCreating(builder);
 
             builder.Entity<Album>().ToTable("album");
+            builder.Entity<SharedAlbum>().ToTable("SharedAlbums");
+            builder.Entity<Photo>().ToTable("Photos");
         }
     }
 }

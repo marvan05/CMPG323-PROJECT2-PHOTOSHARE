@@ -1,0 +1,196 @@
+﻿@model PhotoViewModel
+
+    <button id="btnAddphoto" class="btn btn-primary">Add photo</button>
+    <br />
+
+    <input type="hidden" value="@Url.Action("CreatePhoto", "Photo" )" id="createPhotoUrl" />
+    <input type="hidden" value="@Url.Action("EditPhoto", "Photo" )" id="editPhotoUrl" />
+
+@Html.HiddenFor(x => x.AlbumId, new { id="albumId" })
+@if (Model.Photos.Any())
+{
+    foreach (var photo in Model.Photos)
+    {
+        <div class="col-md-4 m-4 py-3 photo-container justify-content-center">
+            <a class="p-3">@photo.Title</a>
+            <img src="@photo.Image" class="img-fluid rounded p-2">
+            <div class="row justify-content-between p-2">
+                <a id="edit"
+                   class="btn btn-light btn-sm"
+                   data-id="@photo.Id">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a id="view" class="btn btn-light btn-sm" href="@photo.Image"><i class="bi bi-eye-fill"></i> Download</a>
+                <a id="delete"
+                   class="btn btn-light btn-sm"
+                   data-url="@Url.Action("Deletephoto","Photo",new { id=@photo.Id })">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-primary" role="alert">
+        You have no photos!
+    </div>
+}
+
+<div class="modal" role="dialog" id="createPhotoModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create new Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submit">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="deletePhotoModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Photo</h5>
+            </div>
+            <div class="modal-body">
+                Are you Sure you want to delete the Photo?
+            </div>
+            <div class="modal-footer">
+                <button id="deletePhoto" type="button" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="snackbar" class="snackbar"></div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('#edit').on('click', function () {
+            debugger;
+            let url = $('#editPhotoUrl').val();
+            let PhotoId = $(this).data('id');
+            $.get(url, { PhotoId }, function (response) {
+                $('.modal-body').html(response);
+                $('#createPhotoModal').modal('show');
+            })
+        })
+
+        $('#btnAddphoto').on('click', function () {
+            debugger;
+            var url = $('#createPhotoUrl').val();
+            $.get(url, function (response) {
+                $('.modal-body').html(response);
+                $('#createPhotoModal').modal('show');
+            });
+        });
+
+        $('#submit').on('click', () => {
+            debugger;
+            var reader = new FileReader();
+            var file = document.querySelector('input[type=file]').files[0];;
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+            else {
+                var PhotoId = $('#Photo_Id').val();
+                if (PhotoId > 0)
+                    EditPhoto(null, PhotoId);
+            }
+
+            reader.onload = function (e) {
+                var image = reader.result;
+                debugger;
+                var PhotoId = $('#Photo_Id').val();
+                if (PhotoId > 0)
+                    EditPhoto(image, PhotoId);
+                else
+                    CreatePhoto(image);
+            };
+        });
+
+        $('#delete').on('click', function () {
+            let url = $('#delete').data('url');
+            $('#deletePhotoModal').modal('show');
+            $('#deletePhotoModal #deletePhoto').attr('data-url', url);
+            document.getElementById('deletePhoto').addEventListener('click', function (event) {
+                debugger;
+                const { url } = event.currentTarget.dataset;
+                $.post(url, function () {
+                    $('#deletePhotoModal').modal('hide');
+                    showToastr('Photo Deleted!');
+                    window.location.reload();
+                }).fail(function () {
+                    showToastr('Photo cannot be Deleted!');
+                })
+            })
+        });
+
+    })
+
+    function EditPhoto(image, id) {
+        var url = $('#createPhotoModal #url').val();
+        var title = $('#title').val();
+        image = image ?? '';
+
+        $.post(url, { title, image, id }, function () {
+            debugger;
+            $('#createPhotoModal').modal('hide');
+            $('.modal-body').html();
+            showToastr('Photo Updated!');
+            window.location.reload();
+        });
+    }
+
+    function CreatePhoto(image, albumId) {
+        var url = $('#createPhotoModal #url').val();
+        var title = $('#title').val();
+        var albumId = $('#albumId').val();
+        $.post(url, { title, albumId, image }, function () {
+            debugger;
+            $('#createPhotoModal').modal('hide');
+            $('.modal-body').html();
+            showToastr('Photo Created!');
+            window.location.reload();
+        });
+    }
+
+    function showToastr(text) {
+        toastr['success'](text);
+
+        toastr.options = {
+            'newestOnTop': false,
+            'progressBar': false,
+            'positionClass': 'toast-top-right',
+            'preventDuplicates': false,
+            'showDuration': '300',
+            'hideDuration': '1000',
+            'timeOut': '5000',
+            'extendedTimeOut': '1000',
+            'showEasing': 'swing',
+            'hideEasing': 'linear',
+            'showMethod': 'fadeIn',
+            'hideMethod': 'fadeOut'
+        };
+    }
+
+</script>

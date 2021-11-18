@@ -1,6 +1,9 @@
 ﻿@model AlbumViewModel
 
-<form asp-action="CreateAlbum" asp-controller="Album" method="Post" id="albumForm">
+@Html.HiddenFor(a => a.Album.Id)
+@if (Model.Album != null)
+{
+    <input type="hidden" id="url" value="@Url.Action("EditAlbum", "Album")" />
     <div class="form-group">
         <label for="title">Album Title</label>
         <input id="title" asp-for="Album.Title" class="form-control" />
@@ -9,4 +12,18 @@
         <label for="photo">Select a Photo</label>
         <input type="file" class="form-control-file" id="photo" asp-for="Album.Image">
     </div>
-</form>
+}
+else
+{
+    <input type="hidden" id="url" value="@Url.Action("CreateAlbum", "Album")" />
+
+    <div class="form-group">
+        <label for="title">Album Title</label>
+        <input id="title" asp-for="Album.Title" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="photo">Select a Photo</label>
+        <input type="file" class="form-control-file" id="photo" asp-for="Album.Image" required>
+    </div>
+}
+

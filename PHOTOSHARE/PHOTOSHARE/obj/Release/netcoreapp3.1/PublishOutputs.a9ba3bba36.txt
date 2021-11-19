@@ -1,4 +1,5 @@
 C:\PHOTOSHARE\CMPG323-PROJECT2\PHOTOSHARE\PHOTOSHARE\obj\Release\netcoreapp3.1\PubTmp\Out\PHOTOSHARE.exe
+C:\PHOTOSHARE\CMPG323-PROJECT2\PHOTOSHARE\PHOTOSHARE\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\Album.css
 C:\PHOTOSHARE\CMPG323-PROJECT2\PHOTOSHARE\PHOTOSHARE\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\site.css
 C:\PHOTOSHARE\CMPG323-PROJECT2\PHOTOSHARE\PHOTOSHARE\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\favicon.ico
 C:\PHOTOSHARE\CMPG323-PROJECT2\PHOTOSHARE\PHOTOSHARE\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\site.js

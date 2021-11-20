@@ -32,23 +32,33 @@ namespace PHOTOSHARE.Controllers
         [HttpPost]
         public HttpStatusCode ShareAlbum(int albumId, string username)
         {
-            try
+            var user = _context.Users.Where(u => u.UserName == username).FirstOrDefault();
+            if (user != null && User.Identity.Name.ToString() != username)
             {
-                var shareAlbum = new SharedAlbum
+                try
                 {
-                    AlbumId = albumId,
-                    Owner = User.Identity.Name.ToString(),
-                    SharedDate = DateTime.Now,
-                    SharedWith = username,
-                };
-                _context.SharedAlbum.Add(shareAlbum);
-                _context.SaveChangesAsync();
-                return HttpStatusCode.OK;
+                    var shareAlbum = new SharedAlbum
+                    {
+                        AlbumId = albumId,
+                        Owner = User.Identity.Name.ToString(),
+                        SharedDate = DateTime.Now,
+                        SharedWith = username,
+                    };
+                    _context.SharedAlbum.Add(shareAlbum);
+                    _context.SaveChangesAsync();
+                    return HttpStatusCode.OK;
+                }
+                catch (Exception)
+                {
+                    return HttpStatusCode.BadRequest;
+                }
             }
-            catch(Exception)
+            else
             {
                 return HttpStatusCode.BadRequest;
-            }
+            } 
+                
+            
         }
 
         public PartialViewResult EditAlbum(int albumId)

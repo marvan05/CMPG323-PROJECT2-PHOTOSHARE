@@ -150,14 +150,19 @@
         debugger;
 
         $('#share').on('click', function () {
-            var id = $('#share').data('id');
             $('#shareAlbumModal').modal('show');
+            $('#username').attr('data-id', $('#share').data('id'));
             $('#shareAlbum').on('click', function () {
+                debugger;
                 var username = $('#username').val();
                 var url = $('#username').data('url');
-                $.post(url, { id, username }, function () {
+                var albumId = $('#username').data('id');
+                $.post(url, { albumId, username }, function (response) {
+                    if (response === 200)
+                        showToastr('Album Shared!', false);
+                    else
+                        showToastr('Album could not share! Ensure Username is entered correctly.', true);
                     $('#shareAlbumModal').modal('hide');
-                    showToastr('Album Shared!');
                 });
             });
         });
@@ -181,7 +186,6 @@
         });
 
         $('#submit').on('click', () => {
-            debugger;
             var reader = new FileReader();
             var file = document.querySelector('input[type=file]').files[0];;
 
@@ -196,7 +200,6 @@
 
             reader.onload = function (e) {
                 var image = reader.result;
-                debugger;
                 var albumId = $('#Album_Id').val();
                 if (albumId > 0)
                     EditAlbum(image, albumId);
@@ -210,14 +213,13 @@
             $('#deleteAlbumModal').modal('show');
             $('#deleteAlbumModal #deleteAlbum').attr('data-url', url);
             document.getElementById('deleteAlbum').addEventListener('click', function (event) {
-                debugger;
                 const { url } = event.currentTarget.dataset;
                 $.post(url, function () {
                     $('#deleteAlbumModal').modal('hide');
-                    showToastr('Album Deleted!');
-                    window.reload();
+                    showToastr('Album Deleted!', false);
+                    window.location.reload();
                 }).fail(function () {
-                    showToastr('Album cannot be Deleted!');
+                    showToastr('Album cannot be Deleted!', true);
                 })
             })
         });
@@ -230,11 +232,10 @@
         image = image ?? '';
 
         $.post(url, { title, image, id }, function () {
-            debugger;
             $('#createAlbumModal').modal('hide');
             $('.modal-body').html();
-            showToastr('Album Updated!');
-            window.reload();
+            showToastr('Album Updated!', false);
+            window.location.reload();
         });
     }
 
@@ -243,16 +244,18 @@
         var title = $('#title').val();
 
         $.post(url, { title, image }, function () {
-            debugger;
             $('#createAlbumModal').modal('hide');
             $('.modal-body').html();
-            showToastr('Album Created!');
-            window.reload();
+            showToastr('Album Created!', false);
+            window.location.reload();
         });
     }
 
-    function showToastr(text) {
-        toastr['success'](text);
+    function showToastr(text, fail) {
+        if (!fail)
+            toastr['success'](text);
+        else
+            toastr['error'](text);
 
         toastr.options = {
             'newestOnTop': false,

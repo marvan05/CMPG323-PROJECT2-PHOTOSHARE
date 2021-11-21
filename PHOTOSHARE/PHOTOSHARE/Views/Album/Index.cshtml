@@ -30,17 +30,17 @@
                 <img src="@album.Image" class="img-fluid rounded p-2" alt="@album.Owner">
                 <div class="row justify-content-between p-2 actionButtons">
                     <a id="edit"
-                       class="btn btn-light btn-sm"
+                       class="btn btn-light btn-sm edit"
                        data-id="@album.Id">
                         <i class="bi bi-pencil"></i> Edit
                     </a>
                     <a id="view" class="btn btn-light btn-sm" href="@Url.Action("Index", "Photo", new { albumId = album.Id })"><i class="bi bi-eye-fill"></i> View</a>
                     <a id="delete"
-                       class="btn btn-light btn-sm"
+                       class="btn btn-light btn-sm delete"
                        data-url="@Url.Action("DeleteAlbum", "Album", new { id = @album.Id })">
                         <i class="bi bi-trash"></i> Delete
                     </a>
-                    <a id="share" class="btn btn-light btn-sm" data-id="@album.Id"><i class="bi bi-share"></i> Share</a>
+                    <a id="share" class="btn btn-light btn-sm share" data-id="@album.Id"><i class="bi bi-share"></i> Share</a>
                 </div>
             </div>
         }
@@ -149,7 +149,7 @@
     $(document).ready(function () {
         debugger;
 
-        $('#share').on('click', function () {
+        $('.share').on('click', function () {
             $('#shareAlbumModal').modal('show');
             $('#username').attr('data-id', $('#share').data('id'));
             $('#shareAlbum').on('click', function () {
@@ -167,7 +167,7 @@
             });
         });
 
-        $('#edit').on('click', function () {
+        $('.edit').on('click', function () {
             debugger;
             let url = $('#editAlbumUrl').val();
             let albumId = $(this).data('id');
@@ -208,8 +208,9 @@
             };
         });
 
-        $('#delete').on('click', function () {
-            let url = $('#delete').data('url');
+        $('.delete').on('click', function () {
+            debugger;
+            let url = $(this).data('url');
             $('#deleteAlbumModal').modal('show');
             $('#deleteAlbumModal #deleteAlbum').attr('data-url', url);
             document.getElementById('deleteAlbum').addEventListener('click', function (event) {

@@ -72,7 +72,6 @@ namespace PHOTOSHARE.Controllers
         {
             var album = _context.Albums.Where(a => a.Id == id).SingleOrDefault();
 
-
             try
             {
                 album.Title = title;
@@ -111,9 +110,25 @@ namespace PHOTOSHARE.Controllers
         [HttpPost]
         public HttpStatusCode DeleteAlbum(int Id)
         {
+            var photos = _context.Photo.Where(p => p.AlbumId == Id).ToList();
+            var sharedAlbums = _context.SharedAlbum.Where(s => s.AlbumId == Id).ToList(); 
             var album = _context.Albums.Where(a => a.Id == Id).FirstOrDefault();
             try
             {
+                foreach(var photo in photos)
+                {
+                    _context.Photo.Attach(photo);
+                    _context.Photo.Remove(photo);
+                    _context.SaveChanges();
+                }
+
+                foreach (var sharedAlbum in sharedAlbums)
+                {
+                    _context.SharedAlbum.Attach(sharedAlbum);
+                    _context.SharedAlbum.Remove(sharedAlbum);
+                    _context.SaveChanges();
+                }
+
                 _context.Albums.Attach(album);
                 _context.Albums.Remove(album);
                 _context.SaveChanges();
